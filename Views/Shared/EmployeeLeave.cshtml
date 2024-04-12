@@ -1,0 +1,35 @@
+﻿@model LeaveApplication.Models.Employee
+
+<h2>Employee Leave</h2>
+<p>Search for leave applications by employee name</p>
+
+@using (Html.BeginForm("EmployeeLeave", "EmployeeInfo", FormMethod.Post))
+{
+    <label for="firstName">First Name:</label>
+    <input type="text" name="firstName" id="firstName" required>
+    <br>
+    <label for="lastName">Last Name:</label>
+    <input type="text" name="lastName" id="lastName" required>
+    <br>
+    <button type="submit">Search</button>
+}
+
+@if (ViewData["LeaveApplication"] != null)
+{
+    @foreach (var application in (Dictionary<string, List<(DateTime, DateTime, DateTime)>>)ViewData["LeaveApplication"])
+    {
+        <div>
+            <ul>
+                @foreach (var leave in application.Value)
+                {
+                    <li>
+                        <h4><strong>Employee:</strong> @application.Key</h4>
+                        <strong>Leave Application:</strong> @leave.Item1.ToShortDateString() - @leave.Item2.ToShortDateString()
+                        <br />
+                        <strong>Application Date:</strong> Application Date: @leave.Item3.ToShortDateString()
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+}

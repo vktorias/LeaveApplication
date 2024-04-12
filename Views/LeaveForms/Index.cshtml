@@ -1,0 +1,60 @@
+﻿@model IEnumerable<LeaveApplication.Models.LeaveForm>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Leave Form</h1>
+<p>Submit or view leave applications here</p>
+
+<p>
+    <a asp-action="Create">Create a new leave application</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.EmployeeId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.LeaveApplicationId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LeaveApplicationId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LeaveApplicationId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

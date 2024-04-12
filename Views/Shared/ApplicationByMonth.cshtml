@@ -1,0 +1,72 @@
+﻿@using System.Globalization
+@{
+    ViewData["Title"] = "Applications By Month";
+
+    // Säkerställ att ViewBag.SelectedMonth är av typen int och inom intervallet 1-12
+    int selectedMonth = ViewBag.SelectedMonth is int month && month >= 1 && month <= 12 ? month : DateTime.Today.Month;
+}
+
+<h1>Applications By Month</h1>
+<p>Search for leave applications by month</p>
+
+<form id="monthForm" method="get" action="/LeaveInfo/ApplicationsByMonth">
+    <label for="month">Select Month:</label>
+    <select id="month" name="month">
+        @for (int i = 1; i <= 12; i++)
+        {
+            if (i == selectedMonth)
+            {
+                <option value="@i" selected>@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</option>
+            }
+            else
+            {
+                <option value="@i">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</option>
+            }
+        }
+    </select>
+
+    <label for="year">Select Year:</label>
+    <select id="year" name="year">
+        @for (int i = 2023; i <= 2024; i++)
+        {
+            if (i == ViewBag.SelectedYear)
+            {
+                <option value="@i" selected>@i</option>
+            }
+            else
+            {
+                <option value="@i">@i</option>
+            }
+        }
+    </select>
+
+    <button type="submit">Search</button>
+</form>
+
+
+@if (ViewData["LeaveApplications"] != null)
+{
+    <h3>@(ViewData["HeaderText"])</h3>
+    @foreach (var item in (Dictionary<string, List<(DateTime, DateTime, DateTime, int)>>)ViewData["LeaveApplications"])
+    {
+        <p><strong>Employee:</strong> @item.Key</p>
+        <ul>
+            @foreach (var leavePeriod in item.Value)
+            {
+                <li>
+                    <strong>Leave Period:</strong> @leavePeriod.Item1.ToShortDateString() - @leavePeriod.Item2.ToShortDateString()
+                    <br />
+                    <strong>Application Date:</strong> @leavePeriod.Item3.ToShortDateString()
+                    <br />
+                    <strong>Number of Days:</strong> @leavePeriod.Item4
+                </li>
+            }
+        </ul>
+    }
+}
+else
+{
+    <p>No leave applications found for the selected period.</p>
+}
+
+
