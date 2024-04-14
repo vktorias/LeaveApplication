@@ -44,7 +44,7 @@
 </form>
 
 
-@if (ViewData["LeaveApplications"] != null)
+@if (ViewData["LeaveApplications"] != null && ((Dictionary<string, List<(DateTime, DateTime, DateTime, int)>>)ViewData["LeaveApplications"]).Count > 0)
 {
     <h3>@(ViewData["HeaderText"])</h3>
     @foreach (var item in (Dictionary<string, List<(DateTime, DateTime, DateTime, int)>>)ViewData["LeaveApplications"])
